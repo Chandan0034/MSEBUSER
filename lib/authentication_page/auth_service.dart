@@ -123,7 +123,6 @@ class AuthService {
     if (user == null) {
       throw Exception("User not authenticated.");
     }
-
     return _firestore
         .collection("MediaFileWithLocation").where("userId" ,isEqualTo: user.uid)
         .orderBy("createdAt", descending: true) // Orders by latest created
@@ -183,7 +182,7 @@ class AuthService {
           .get();
 
       if (doc.exists && doc.data() != null) {
-        return doc['name'] as String?;
+        return doc['username'] as String?;
       }
     } catch (e) {
       print('Error fetching user name: $e');
