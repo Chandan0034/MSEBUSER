@@ -231,7 +231,7 @@ class AuthService {
           {"message":"Issue has been solved","completed":false}
         ],
         "completedURLType":"",
-        "completedUrl":"",
+        "completedURL":"",
         "uploadedAt":"",
         "isCompleted":false,
         'UserName':await getUserName(),

@@ -388,7 +388,7 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
     final isImage = widget.mediaItem['fileType'] == 'image';
     downloadURL=widget.mediaItem['downloadURL']??'';
     final currentStatus = widget.cnt;
-
+    final workiscompleted=widget.mediaItem['isCompleted'];
     return Card(
       color: Color(0xFFECECEC),
       elevation: 0,
