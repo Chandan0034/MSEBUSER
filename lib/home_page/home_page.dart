@@ -35,8 +35,38 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-class AppBarLayout extends StatelessWidget {
+class AppBarLayout extends StatefulWidget {
   const AppBarLayout();
+
+  @override
+  State<AppBarLayout> createState() => _AppBarLayoutState();
+}
+
+class _AppBarLayoutState extends State<AppBarLayout> {
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Logout"),
+        content: const Text("Do you want to log out?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(), // Close dialog
+            child: const Text("No"),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.of(context).pop(); // Close dialog
+              await FirebaseAuth.instance.signOut();
+              // Optionally navigate to login screen:
+              // Navigator.pushReplacementNamed(context, '/login');
+            },
+            child: const Text("Yes"),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +96,7 @@ class AppBarLayout extends StatelessWidget {
               icon: const Icon(Icons.language, color: Colors.black),
               iconSize: 25,
               onPressed: () {
-                // Add action for leading icon
+                _showLogoutDialog(context);
               },
             ),
           ),

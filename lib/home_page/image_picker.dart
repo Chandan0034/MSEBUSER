@@ -401,7 +401,7 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
   LiveLocation liveLocation = LiveLocation();
   AuthService authService = AuthService();
   File? _mediaFile;
-  String? _description;
+  String _description="";
   final ImagePicker _picker = ImagePicker();
   bool _isLoading = false;
   bool _isVideo = false;
@@ -409,6 +409,7 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
   bool _isUploading = false;
   bool _isReporting = false;
   VideoPlayerController? _videoController;
+  String? _selectedFault;
 
   @override
   void initState() {
@@ -463,7 +464,6 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
   }
 
   void _clearMedia() {
-    _description = null;
     _mediaFile = null;
     if (_videoController != null) {
       _videoController!.dispose();
@@ -536,7 +536,7 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
   }
 
   Future<void> _uploadMedia() async {
-    if (_mediaFile == null || _description == null) {
+    if (_mediaFile == null) {
       _showSnackBar('Please select a media file and enter a description.', Colors.red);
       return;
     }
@@ -564,8 +564,9 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
         fileType: _isVideo ? 'video' : 'image',
         latitude: latitude,
         longitude: longitude,
-        description: _description!,
+        description: _description,
         Id: uniqueId,
+       faultName: _selectedFault!
       );
 
       if (!success) {
@@ -689,6 +690,46 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
                       const SizedBox(height: 40),
                       // Description box
                       Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 30),
+                        child: DropdownButtonFormField<String>(
+                          value: _selectedFault,
+                          hint: const Text('Select fault type'),
+                          items: const [
+                            'Wire Fault (Open Circuit)',
+                            'Transformer Burning',
+                            'Meter Tampering',
+                            'Power Theft',
+                            'Voltage Fluctuation',
+                            'Pole Damage (Accident/Weather)',
+                            'Fuse Blown',
+                            'Short Circuit',
+                            'Overloading',
+                            'Equipment Failure (Switchgear)',
+                            'Custom',
+                          ].map((fault) {
+                            return DropdownMenuItem(
+                              value: fault,
+                              child: Text(fault),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              _selectedFault = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: const Color(0xFFF1F9FF),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      // Description box
+                      Container(
                         height: 130,
                         margin: const EdgeInsets.symmetric(horizontal: 30),
                         child: TextField(
@@ -700,7 +741,6 @@ class _ImagePickerWithDescriptionState extends State<ImagePickerWithDescription>
                           maxLines: 8,
                           decoration: InputDecoration(
                             hintText: 'Describe the issue...',
-                            filled: true,
                             fillColor: Color(0xFFF1F9FF),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),

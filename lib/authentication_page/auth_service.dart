@@ -178,7 +178,8 @@ class AuthService {
     required double latitude,
     required double longitude,
     required String description,
-    required String Id
+    required String Id,
+    required String faultName
   }) async {
     late DateTime dateTime=DateTime.now();
     try {
@@ -216,7 +217,10 @@ class AuthService {
         "completedUrl":"",
         "uploadedAt":"",
         "isCompleted":false,
-        'UserName':user.displayName
+        'UserName':user.displayName,
+        "faultName":faultName,
+        "inProcess":true,
+        "completed":false
       });
       return true;
     } catch (e) {
