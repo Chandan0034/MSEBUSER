@@ -101,10 +101,10 @@ class _AppBarLayoutState extends State<AppBarLayout> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
-              icon: const Icon(Icons.language, color: Colors.black),
+              icon: const Icon(Icons.notifications_none, color: Colors.black),
               iconSize: 25,
               onPressed: () {
-                _showLogoutDialog(context);
+
               },
             ),
           ),
@@ -142,9 +142,10 @@ class _AppBarLayoutState extends State<AppBarLayout> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
-              icon: const Icon(Icons.notifications_none, color: Colors.black),
+              icon: const Icon(Icons.logout, color: Colors.black),
               iconSize: 25,
               onPressed: () {
+                _showLogoutDialog(context);
                 // Add action for notifications
               },
             ),
