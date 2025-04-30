@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:untitled1/home_page/report_update_screen.dart';
 import 'package:untitled1/home_page/live_location.dart';
 import 'package:untitled1/local_database/local_database_class.dart';
@@ -51,15 +54,20 @@ class _AppBarLayoutState extends State<AppBarLayout> {
         content: const Text("Do you want to log out?"),
         actions: [
           TextButton(
-            onPressed: () => Navigator.of(context).pop(), // Close dialog
+            onPressed: () => Navigator.of(context).pop(),
             child: const Text("No"),
           ),
           TextButton(
             onPressed: () async {
-              Navigator.of(context).pop(); // Close dialog
+              Navigator.of(context).pop();
               await FirebaseAuth.instance.signOut();
-              // Optionally navigate to login screen:
-              // Navigator.pushReplacementNamed(context, '/login');
+
+              // Then close the app
+              if (Platform.isAndroid) {
+                SystemNavigator.pop(); // Preferred on Android
+              } else if (Platform.isIOS) {
+                exit(0); // Force close for iOS (not recommended by Apple)
+              }
             },
             child: const Text("Yes"),
           ),

@@ -10,17 +10,18 @@ class AuthService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final month=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-
+  String userName="";
   Future<String> registerUser(String email, String f_name, String l_name, String password) async {
     try {
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-
+      userName=f_name+" "+l_name;
       // Storing user's details without saving the password
       await _firestore.collection("Users").doc(userCredential.user!.uid).set({
         "username": "$f_name $l_name",
         "email": email,
         "password":password,
         'createdAt': DateTime.now(),
+        'Id':_auth.currentUser?.uid
       });
       return "Registration successful";
     } catch (e) {
@@ -110,7 +111,7 @@ class AuthService {
   Stream<QuerySnapshot<Map<String, dynamic>>> fetchUserData() {
     User? user = _auth.currentUser;
     if (user == null) throw Exception("User not authenticated.");
-
+    print(_auth.currentUser?.uid);
     return FirebaseFirestore.instance
         .collection("MediaFileWithLocation")
         .where("userId", isEqualTo: user.uid)
@@ -171,7 +172,24 @@ class AuthService {
     }
   }
 
+  Future<String?> getUserName() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return null;
 
+      final doc = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .get();
+
+      if (doc.exists && doc.data() != null) {
+        return doc['name'] as String?;
+      }
+    } catch (e) {
+      print('Error fetching user name: $e');
+    }
+    return null; // Return null if not found or error
+  }
   Future<bool> storeMediaData({
     required File mediaFile,
     required String fileType,
@@ -217,7 +235,7 @@ class AuthService {
         "completedUrl":"",
         "uploadedAt":"",
         "isCompleted":false,
-        'UserName':user.displayName,
+        'UserName':await getUserName(),
         "faultName":faultName,
         "inProcess":true,
         "completed":false
