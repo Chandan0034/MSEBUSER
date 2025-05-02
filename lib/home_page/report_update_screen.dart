@@ -165,6 +165,7 @@ class _ReportUpdateScreenState extends State<ReportUpdateScreen> {
                           for (var status in mediaItem['statusList']) {
                             if (status['completed'] == true) {
                               completedCount++;
+                              // print(completedCount);
                             }
                           }
 

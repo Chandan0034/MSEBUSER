@@ -225,8 +225,9 @@ class AuthService {
         "date": "${dateTime.day < 10 ? "0${dateTime.day}":dateTime.day} ${month[dateTime.month-1]} ${dateTime.year}",
         "time":"${dateTime.hour < 10 ? "0${dateTime.hour}":dateTime.hour} : ${dateTime.minute < 10 ? "0${dateTime.minute}":dateTime.minute} : ${dateTime.second < 10 ? "0${dateTime.second}":dateTime.second}",
         "statusList":[
+          {"message":"Report confirmed1","completed":true},
           {"message":"Report confirmed","completed":true},
-          {"message":"Admin reported to workers","completed":true},
+          {"message":"Admin reported to workers","completed":false},
           {"message":"Work has been started on this issue","completed":false},
           {"message":"Issue has been solved","completed":false}
         ],

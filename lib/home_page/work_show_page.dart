@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 class WorkShowPage extends StatefulWidget {
   final Map<String, dynamic> mediaItem;
   final int cnt;
@@ -26,6 +27,7 @@ class _WorkShowPageState extends State<WorkShowPage> {
   @override
   Widget build(BuildContext context) {
     final downloadURL = widget.mediaItem['completedURL'] ?? '';
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -37,23 +39,17 @@ class _WorkShowPageState extends State<WorkShowPage> {
               alignment: Alignment.topLeft,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15), // Apply border radius here
-                child: Image.network(
-                  downloadURL,
+                child:CachedNetworkImage(
+                  imageUrl: downloadURL,
                   fit: BoxFit.fill,
                   height: 400,
                   width: double.infinity,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                            (loadingProgress.expectedTotalBytes ?? 1)
-                            : null,
-                      ),
-                    );
-                  },
+                  placeholder: (context, url) => Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
+
               ),
             ),
             SizedBox(height: 10),

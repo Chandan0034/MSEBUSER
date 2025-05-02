@@ -388,7 +388,9 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
     final isImage = widget.mediaItem['fileType'] == 'image';
     downloadURL=widget.mediaItem['downloadURL']??'';
     final currentStatus = widget.cnt;
-    final workiscompleted=widget.mediaItem['isCompleted'];
+    final workiscompleted=widget.mediaItem['completed'];
+    print("Current Status");
+    print(workiscompleted);
     return Card(
       color: Color(0xFFECECEC),
       elevation: 0,
@@ -442,7 +444,7 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
           children: statuses.asMap().entries.map((entry) {
             int index = entry.key;
             String status = entry.value;
-
+            // print(index);
             return Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -470,7 +472,7 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
                         duration: const Duration(seconds: 1),
                         width: 4,
                         height: 40,
-                        color: index < currentStatus + 1 ? Colors.blue : Colors.grey,
+                        color: index < currentStatus+1? Colors.blue : Colors.grey,
                       ),
                   ],
                 ),
@@ -520,16 +522,15 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
                     fontSize: 16,
                     fontFamily: "Poppins")),
             const SizedBox(height: 8),
-
             GestureDetector(
               onTap: () {
-                widget.cnt == 4
+                workiscompleted
                     ? Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) => WorkShowPage(
                       mediaItem: widget.mediaItem,
-                      cnt: widget.cnt,
+                      cnt: widget.cnt+1,
                     ),
                   ),
                 )
@@ -545,13 +546,13 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
                 margin: const EdgeInsets.all(10),
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 decoration: BoxDecoration(
-                  color: widget.cnt == 4
+                  color: workiscompleted
                       ? Colors.white
                       : Colors.white.withOpacity(.3),
                   borderRadius: BorderRadius.circular(8),
                   boxShadow: [
                     BoxShadow(
-                      color: widget.cnt == 4
+                      color:workiscompleted
                           ? Colors.grey.withOpacity(0.5)
                           : Colors.transparent,
                       blurRadius: 5,
@@ -564,7 +565,7 @@ class _MediaItemCardScreenState extends State<MediaItemCardScreen>
                     "View Final Work",
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      color: widget.cnt == 4
+                      color:workiscompleted
                           ? Colors.black
                           : Colors.black.withOpacity(.1),
                       fontSize: 16,
