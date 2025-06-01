@@ -46,6 +46,7 @@ class AppBarLayout extends StatefulWidget {
 }
 
 class _AppBarLayoutState extends State<AppBarLayout> {
+  String selectedFilter="inProgress";
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -133,6 +134,47 @@ class _AppBarLayoutState extends State<AppBarLayout> {
             ),
           ),
           // Action icon (e.g., notification button)
+          // GestureDetector(
+          //   onTapDown: (TapDownDetails details) async {
+          //     final selected = await showMenu<String>(
+          //       context: context,
+          //       position: RelativeRect.fromLTRB(
+          //         details.globalPosition.dx,
+          //         details.globalPosition.dy,
+          //         details.globalPosition.dx,
+          //         details.globalPosition.dy,
+          //       ),
+          //       items: const [
+          //         PopupMenuItem(
+          //           value: 'new',
+          //           child: Text('New'),
+          //         ),
+          //         PopupMenuItem(
+          //           value: 'inProcess',
+          //           child: Text('In Process'),
+          //         ),
+          //         PopupMenuItem(
+          //           value: 'completed',
+          //           child: Text('Completed'),
+          //         ),
+          //       ],
+          //     );
+          //
+          //     if (selected != null) {
+          //       setState(() {
+          //         selectedFilter = selected;
+          //       }); // update global variable
+          //       print("Global filter selected: $selectedFilter");
+          //       // Optionally trigger UI updates here if needed
+          //     }
+          //   },
+          //   child: Container(
+          //     padding: const EdgeInsets.all(8.0),
+          //     width: 35,
+          //     height: 35,
+          //     child: Image.asset("assets/images/filter.png", width: 35, height: 35),
+          //   ),
+          // ),
           Container(
             margin: EdgeInsets.only(top: 10),
             width: 40,
