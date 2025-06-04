@@ -29,6 +29,13 @@ class SplashScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/images/dpu.jpg', // Add your logo image here
+              width: 200,
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+            SizedBox(height: 10,),
             Image.asset('assets/images/mseb_icon.png'), // Your custom logo
             const SizedBox(height: 20),
             const Text(
