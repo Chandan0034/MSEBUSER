@@ -47,6 +47,7 @@ class AppBarLayout extends StatefulWidget {
 
 class _AppBarLayoutState extends State<AppBarLayout> {
   String selectedFilter="inProgress";
+  String selectedFilter1="Profile";
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -101,15 +102,54 @@ class _AppBarLayoutState extends State<AppBarLayout> {
               color: const Color(0xFFF1F9FF),
               borderRadius: BorderRadius.circular(8),
             ),
-            child: IconButton(
-              icon: const Icon(Icons.notifications_none, color: Colors.black),
-              iconSize: 25,
-              onPressed: () {
+            child: Container(
+              margin: EdgeInsets.only(top: 8),
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: const Color(0xFFF1F9FF),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: IconButton(
+                  padding: EdgeInsets.only(bottom: 8), // ✅ Remove default padding
+                  constraints: BoxConstraints(),
+                  icon: Icon(Icons.menu, color: Colors.black),
+                  onPressed: () async {
+                    final selected = await showMenu<String>(
+                      context: context,
+                      position: RelativeRect.fromLTRB(0, 80, 0, 0), // Adjust as needed
+                      items: const [
+                        PopupMenuItem(
+                          value: 'Profile',
+                          child: Text('Profile'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Language',
+                          child: Text('Language'),
+                        ),
+                        PopupMenuItem(
+                          value: 'Logout',
+                          child: Text('Logout'),
+                        ),
+                      ],
+                    );
 
-              },
+                    if (selected != null) {
+                      if (selected == 'Logout') {
+                        _showLogoutDialog(context);
+                      } else {
+                        // Navigate or handle other selections like Profile or Language
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$selected selected')),
+                        );
+                      }
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
-          // Title (Image + Text)
+            ),
           Container(
             margin: EdgeInsets.only(top: 8),
             child: Column(
@@ -184,10 +224,10 @@ class _AppBarLayoutState extends State<AppBarLayout> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: IconButton(
-              icon: const Icon(Icons.logout, color: Colors.black),
+              icon: const Icon(Icons.notifications, color: Colors.black),
               iconSize: 25,
               onPressed: () {
-                _showLogoutDialog(context);
+                // _showLogoutDialog(context);
                 // Add action for notifications
               },
             ),
